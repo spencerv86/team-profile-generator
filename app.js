@@ -9,30 +9,36 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-const Choices = require("inquirer/lib/objects/choices");
 
-
+const employees = [];
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 const managerQuestions = [
     {
         type: "input",
-        name: "managerName",
+        name: "name",
         message: "What is your manager's name?",
     },
     {
         type: "input",
-        name: "managerID",
+        name: "id",
         message: "What is your manager's ID no.?",
     },
     {
         type: "input",
-        name: "managerEmail",
+        name: "email",
         message: "What is your manager's email address?",
+        validate: function (input) {
+            if (/^[\w|\W]+@[a-zA-Z0-9]+.com$/.test(input)){
+                return true;
+            } else {
+                return "You must provide a valid email."
+            };
+        } 
     },
     {
         type: "input",
-        name: "managerOffice",
+        name: "officeNumber",
         message: "What is your manager's office number?",
     },
 ];
@@ -40,22 +46,22 @@ const managerQuestions = [
 const engineerQuestions = [
     {
         type: "input",
-        name: "engineerName",
+        name: "name",
         message: "What is your engineer's name?",
     },
     {
         type: "input",
-        name: "engineerID",
+        name: "id",
         message: "What is your engineer's ID?",
     },
     {
         type: "input",
-        name: "engineerEmail",
+        name: "email",
         message: "What is your engineer's email?",
     },
     {
         type: "input",
-        name: "engineerGithub",
+        name: "github",
         message: "What is your engineer's github username?",
     },
 ];
@@ -63,22 +69,22 @@ const engineerQuestions = [
 const internQuestions = [
     {
         type: "input",
-        name: "internName",
+        name: "name",
         message: "What is your intern's name?",
     },
     {
         type: "input",
-        name: "internID",
+        name: "id",
         message: "What is your intern's ID?",
     },
     {
         type: "input",
-        name: "internEmail",
+        name: "email",
         message: "What is your intern's email?",
     },
     {
         type: "input",
-        name: "internSchool",
+        name: "school",
         message: "What is your intern's school?",
     },
 ];
@@ -90,7 +96,64 @@ const createEmployee = [
         message: "What type of team member would you like to add?",
         choices: ["Engineer", "Intern", "I don't want to add any more team members"],
     },
-]
+];
+
+function askManager() {
+    inquirer.prompt(managerQuestions).then((response) => {
+        const newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
+        employees.push(newManager);
+        askToContinue();
+        // console.log(response);
+    });
+};
+
+function askEngineer() {
+    inquirer.prompt(engineerQuestions).then((res) => {
+        const newEngineer = new Engineer(res.name, res.id, res.email, res.github);
+        employees.push(newEngineer);
+        askToContinue();
+    });
+};
+
+function askIntern() {
+    inquirer.prompt(internQuestions).then((res) => {
+        const newIntern = new Intern(res.name, res.id, res.email, res.school);
+        employees.push(newIntern);
+        askToContinue();
+    });
+};
+
+function askToContinue() {
+    inquirer.prompt(createEmployee).then((res) => {
+        switch (res.nextEmployee){
+            case "Engineer": 
+                askEngineer();
+                break;
+
+            case "Intern":
+                askIntern();
+                break;
+            
+            default:
+                buildTeam();
+        }
+    })
+};
+
+function buildTeam() {
+    console.log(employees);
+    if (!fs.existsSync(OUTPUT_DIR)){
+    fs.mkdirSync(OUTPUT_DIR);
+    };
+    fs.writeFileSync(outputPath, render(employees), "utf8");
+};
+
+
+function init() {
+    askManager();
+};
+
+init();
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
