@@ -9,10 +9,88 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const Choices = require("inquirer/lib/objects/choices");
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+const managerQuestions = [
+    {
+        type: "input",
+        name: "managerName",
+        message: "What is your manager's name?",
+    },
+    {
+        type: "input",
+        name: "managerID",
+        message: "What is your manager's ID no.?",
+    },
+    {
+        type: "input",
+        name: "managerEmail",
+        message: "What is your manager's email address?",
+    },
+    {
+        type: "input",
+        name: "managerOffice",
+        message: "What is your manager's office number?",
+    },
+];
+
+const engineerQuestions = [
+    {
+        type: "input",
+        name: "engineerName",
+        message: "What is your engineer's name?",
+    },
+    {
+        type: "input",
+        name: "engineerID",
+        message: "What is your engineer's ID?",
+    },
+    {
+        type: "input",
+        name: "engineerEmail",
+        message: "What is your engineer's email?",
+    },
+    {
+        type: "input",
+        name: "engineerGithub",
+        message: "What is your engineer's github username?",
+    },
+];
+
+const internQuestions = [
+    {
+        type: "input",
+        name: "internName",
+        message: "What is your intern's name?",
+    },
+    {
+        type: "input",
+        name: "internID",
+        message: "What is your intern's ID?",
+    },
+    {
+        type: "input",
+        name: "internEmail",
+        message: "What is your intern's email?",
+    },
+    {
+        type: "input",
+        name: "internSchool",
+        message: "What is your intern's school?",
+    },
+];
+
+const createEmployee = [
+    {
+        type: "list",
+        name: "nextEmployee",
+        message: "What type of team member would you like to add?",
+        choices: ["Engineer", "Intern", "I don't want to add any more team members"],
+    },
+]
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
