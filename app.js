@@ -34,7 +34,7 @@ const managerQuestions = [
             } else {
                 return "You must provide a valid email."
             };
-        } 
+        },
     },
     {
         type: "input",
@@ -58,6 +58,13 @@ const engineerQuestions = [
         type: "input",
         name: "email",
         message: "What is your engineer's email?",
+        validate: function (input) {
+            if (/^[\w|\W]+@[a-zA-Z0-9]+.com$/.test(input)){
+                return true;
+            } else {
+                return "You must provide a valid email."
+            };
+        },
     },
     {
         type: "input",
@@ -81,6 +88,13 @@ const internQuestions = [
         type: "input",
         name: "email",
         message: "What is your intern's email?",
+        validate: function (input) {
+            if (/^[\w|\W]+@[a-zA-Z0-9]+.com$/.test(input)){
+                return true;
+            } else {
+                return "You must provide a valid email."
+            };
+        },
     },
     {
         type: "input",
