@@ -1,0 +1,8 @@
+body {
+    background-image: url(../images/memphis-mini.png);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.card {
+    margin: 10px;
+};
