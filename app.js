@@ -155,7 +155,7 @@ function askToContinue() {
 };
 
 function buildTeam() {
-    console.log(employees);
+    console.log("Team page has been built!");
     if (!fs.existsSync(OUTPUT_DIR)){
     fs.mkdirSync(OUTPUT_DIR);
     };
